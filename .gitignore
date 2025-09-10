@@ -1,28 +1,45 @@
-# Ignore .NET build outputs
-**/bin/
-**/obj/
-*.dll
-*.exe
-*.pdb
-*.cache
-*.log
-*.editorconfig
+# =============================
+# Global ignores
+# =============================
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
 
-# Ignore NuGet artifacts
-project.assets.json
-project.nuget.cache
-*.nuget.g.props
-*.nuget.g.targets
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
 
-# User-specific files
+# =============================
+# Frontend: React (Fintech-React)
+# =============================
+Fintech-React/node_modules/
+Fintech-React/build/
+Fintech-React/.env
+Fintech-React/.env.local
+Fintech-React/.env.*.local
+
+# =============================
+# Backend: .NET (FintechApi)
+# =============================
+
+# Build output
+FintechApi/bin/
+FintechApi/obj/
+FintechApi/Debug/
+FintechApi/Release/
+
+# VS/IDE junk
+.vs/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
 
-# React/Node.js
-node_modules/
-build/
-dist/
-
-# Env files
-.env
-
+# NuGet packages
+*.nupkg
+*.*
