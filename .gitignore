@@ -1,0 +1,28 @@
+# Ignore .NET build outputs
+**/bin/
+**/obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.editorconfig
+
+# Ignore NuGet artifacts
+project.assets.json
+project.nuget.cache
+*.nuget.g.props
+*.nuget.g.targets
+
+# User-specific files
+*.user
+*.suo
+
+# React/Node.js
+node_modules/
+build/
+dist/
+
+# Env files
+.env
+
