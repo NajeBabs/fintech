@@ -22,8 +22,12 @@ namespace FintechApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserAccountModel>>> GetAll()
         {
-            var account = await _db.UserAccounts.ToListAsync();
-            return Ok(account);
+            var accountList = await _db.UserAccounts.ToListAsync();
+
+            if (!accountList.Any())
+                return Ok("No user accounts found.");
+            
+            return Ok(accountList);
         }
 
         // GET: api/UserAccounts/{id}
@@ -32,26 +36,35 @@ namespace FintechApi.Controllers
         {
             var account = await _db.UserAccounts.FindAsync(id);
             if (account == null)
-                return NotFound();
+                return NotFound("No user account found.");
 
             return Ok(account);
         }
 
         // POST: api/UserAccounts
         [HttpPost]
-        public async Task<ActionResult<UserAccountModel>> Create(UserAccountModel account)
+        public async Task<ActionResult<UserAccountModel>> Create(UserAccountModel newAccount)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             // Add the new account to the DbContext
-            _db.UserAccounts.Add(account);
+            _db.UserAccounts.Add(newAccount);
+
+            // save the new account
             await _db.SaveChangesAsync();
 
-            return Ok();
+            return CreatedAtAction(nameof(GetById), new { id = newAccount.Id}, newAccount);
         }
 
         // PUT: api/UserAccounts/{id}
         [HttpPut("{id:int}")]
         public async Task<ActionResult<IEnumerable<UserAccountModel>>> Update(int id, UserAccountModel updatedAccount)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var existingAccount = await _db.UserAccounts.FindAsync(id);
             if(existingAccount == null)
             {
@@ -61,8 +74,10 @@ namespace FintechApi.Controllers
             existingAccount.UserAccountType = updatedAccount.UserAccountType;
             existingAccount.AccountName = updatedAccount.AccountName;
             existingAccount.CurrentBalance = updatedAccount.CurrentBalance;
+            existingAccount.ProviderName = updatedAccount.ProviderName;
             existingAccount.ModifiedAt = updatedAccount.ModifiedAt;
 
+            // save the updated
             await _db.SaveChangesAsync();
 
             return NoContent();
@@ -70,7 +85,7 @@ namespace FintechApi.Controllers
 
         // DELETE: api/UserAccounts/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var account = await _db.UserAccounts.FindAsync(id);
             if (account == null)
@@ -78,6 +93,8 @@ namespace FintechApi.Controllers
 
             // Remove the account
             _db.UserAccounts.Remove(account);
+
+            // save the changes
             await _db.SaveChangesAsync();
 
             return NoContent(); 

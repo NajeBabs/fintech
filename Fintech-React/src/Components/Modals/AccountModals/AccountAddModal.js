@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { createUserAccount } from "../../../services/api"; // your API helper
+import { createUserAccount } from "../../../services/api"; // our API helper
 
 export default function AddModal({ isOpen, onClose, onAdd }) {
+  // for error array
+  const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     accountName: "",
     accountForm: "",
@@ -17,8 +20,34 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.accountName.trim()) {
+      errors.accountName = "Account Name is required.";
+    }
+    if (!formData.accountForm) {
+      errors.accountForm = "Account Form is required.";
+    }
+    if (!formData.userAccountType) {
+      errors.userAccountType = "Account Type is required.";
+    }
+    if (!formData.providerName) {
+      errors.providerName = "Provider Name is required.";
+    }
+    if ((formData.currentBalance = "" || formData.currentBalance < 0)) {
+      errors.currentBalance = "Initial amount must be 0 or more.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSave = async () => {
     try {
+      if (!validate()) {
+        return;
+      }
+
       await createUserAccount({
         ...formData,
         createdAt: new Date().toISOString(),
@@ -45,6 +74,16 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] relative">
+        {/* Display all errors at once */}
+        {Object.keys(errors).length > 0 && (
+          <div className="mb-4 p-2 border border-red-400 bg-red-100 rounded">
+            <ul className="text-red-500 text-sm list-disc list-inside">
+              {Object.values(errors).map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </ul>
+          </div>
+        )}
         {/* Modal Title */}
         <h2 className="text-xl font-bold mb-4">Add Account</h2>
 
