@@ -56,18 +56,26 @@ const Balances = () => {
   // Provider logos
   const getProviderImage = (provider) => {
     switch (provider.toLowerCase()) {
+      case "cash":
+        return "/Images/cash.png";
       case "g-cash":
         return "/Images/gcash.png";
       case "maya":
         return "/Images/maya.png";
+      case "paypal":
+        return "/Images/paypal.png";  
+      case "other e-wallets":
+        return "/Images/otherewallet.png";  
       case "bdo":
         return "/Images/bdo.png";
       case "bpi":
         return "/Images/bpi.png";
       case "metrobank":
         return "/Images/metrobank.png";
+      case "others banks":
+        return "/Images/other.png";  
       default:
-        return "https://static.vecteezy.com/system/resources/thumbnails/013/948/616/small/bank-icon-logo-design-vector.jpg";
+        return "/Images/Other.png";
     }
   };
 
