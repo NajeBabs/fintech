@@ -33,7 +33,7 @@ const Sidebar = () => {
             to={item.path}
             className={`flex items-center gap-3 p-2 rounded-lg transition ${
               location.pathname === item.path
-                ? "bg-fintech-mint text-black font-semibold"
+                ? "bg-[#9FD8CB] text-black font-semibold"
                 : "hover:bg-gray-700"
             }`}
           >
