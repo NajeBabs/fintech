@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import DashboardLayout from "../Components/DashboardLayout";
 import { Plus, Edit2, Trash2 } from "lucide-react";
+import EAddModal from "../Components/Modals/ExpensesModals/ExpensesAddModal";
+import EDeleteModal from "../Components/Modals/ExpensesModals/ExpensesDeleteModal";
+import EEditModal from "../Components/Modals/ExpensesModals/ExplensesEditModal";
 
 const Expenses = () => {
+  const [ModalOpen, setModalOpen] = useState(false);
+  const [DeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [EditModalOpen, setEditModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Sample data (replace with your API or DB data)
@@ -77,7 +83,10 @@ const Expenses = () => {
 
       <div className="flex justify-end mb-3">
         {/* Add Expense Button */}
-        <button className="flex items-center gap-2 bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-full shadow hover:bg-[#4bb69e] transition">
+        <button 
+          className="flex items-center gap-2 bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-full shadow hover:bg-[#4bb69e] transition"
+          onClick={() => setModalOpen(true)}
+        >
           <Plus size={16} />
           Add Expense
         </button>
@@ -129,11 +138,17 @@ const Expenses = () => {
                     <td className="p-3">{exp.account}</td>
                     <td className="p-3 font-semibold">${exp.amount}</td>
                     <td className="p-3 flex gap-3">
-                      <button className="text-blue-500 hover:text-blue-700">
-                        <Edit2 size={16} />
+                      <button 
+                        className="text-black hover:text-blue-600"
+                        onClick={() => setEditModalOpen(true)}
+                      >
+                        <Edit2 size={25} />
                       </button>
-                      <button className="text-red-500 hover:text-red-700">
-                        <Trash2 size={16} />
+                      <button 
+                        className="text-black hover:text-red-600"
+                        onClick={() => setDeleteModalOpen(true)}
+                      >
+                        <Trash2 size={25} />
                       </button>
                     </td>
                   </tr>
@@ -154,6 +169,9 @@ const Expenses = () => {
           showing {filteredExpenses.length} of {expenses.length} Records
         </div>
       </div>
+      <EAddModal isOpen={ModalOpen} onClose={() => setModalOpen(false)} />
+      <EDeleteModal isOpen={DeleteModalOpen} onClose={() => setDeleteModalOpen(false)} />
+      <EEditModal isOpen={EditModalOpen} onClose={() => setEditModalOpen(false)} />
     </DashboardLayout>
   );
 };

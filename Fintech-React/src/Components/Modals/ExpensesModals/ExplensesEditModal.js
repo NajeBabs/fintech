@@ -1,58 +1,48 @@
 import React, { useState } from "react";
 import { createUserAccount } from "../../../services/api"; // your API helper
 
-export default function GEditModal({ isOpen, onClose }) {
+
+export default function EEditModal({ isOpen, onClose }) {
   
   if (!isOpen) return null;
-
-    const today = new Date().toISOString().split("T")[0];
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] relative">
         {/* Modal Title */}
-        <h2 className="text-xl font-bold mb-4">Edit Goal</h2>
+        <h2 className="text-xl font-bold mb-4">Edit Expense</h2>
 
         {/* Modal Content */}
         <div className="text-gray-700 mb-4">
-          <label className="block mb-2 font-semibold">Goal Name</label>
+          <label className="block mb-2 font-semibold">Date</label>
           <input
-            type="text"
-            placeholder="Goal Name"
+            name="accountName"
+            type="date"
+            placeholder="Expense date"
             className="border rounded-lg px-4 py-2 w-full mb-3"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
-            {/* Start Date */}
-            <div className="flex flex-col">
-                <label className="mb-2 font-semibold">Start Date</label>
-                <input
-                type="date"
-                min={today} // Prevent past dates
-                className="rounded-xl border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-800"
-                />
-            </div>
-
-            {/* End Date */}
-            <div className="flex flex-col">
-                <label className="mb-2 font-semibold">End Date</label>
-                <input
-                type="date"
-                min={today} // End date must be after start date
-                className="rounded-xl border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-800"
-                />
-            </div>
-            </div>
-
-          <label className="block mb-2 font-semibold">Target Amount</label>
-          <input
-            type="number"
-            placeholder="Enter Amount"
+          <label className="block mb-2 font-semibold">Time</label>
+          <input 
+            aria-label="Time" 
+            type="time" 
             className="border rounded-lg px-4 py-2 w-full mb-3"
           />
+            
 
-          <label className="block mb-2 font-semibold">Linked Account</label>
+          <label className="block mb-2 font-semibold">Description</label>
+            <input
+                type="text"
+                className="border rounded-lg px-4 py-2 w-full mb-3"
+            />
+
+          <label className="block mb-2 font-semibold">Amount</label>
+            <input
+                type="number"
+                className="border rounded-lg px-4 py-2 w-full mb-3"
+            />
+
+          <label className="block mb-2 font-semibold">Account to deduct from</label>
           <select className="border rounded-lg px-4 py-2 w-full mb-3">
             <option value="">Select Account</option>
             <option value="account1">Account 1</option>

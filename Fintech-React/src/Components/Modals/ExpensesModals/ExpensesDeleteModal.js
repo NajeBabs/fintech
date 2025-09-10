@@ -1,0 +1,47 @@
+import React from "react";
+import { deleteUserAccount } from "../../../services/api";
+
+export default function EDeleteModal({ isOpen, onClose, }) {
+  if (!isOpen ) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-[770px] relative">
+        {/* Modal Title */}
+        <h2 className="text-xl font-bold mb-4">Delete Expense</h2>
+
+        {/* Modal Content */}
+        <div className="text-gray-700 mb-4">
+          <p>
+            Are you sure you want to delete (insert expemse name)? This action cannot be
+            undone.
+          </p>
+        </div>
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+        >
+          ✕
+        </button>
+
+        {/* Footer Buttons */}
+        <div className="flex justify-end mt-4 gap-4">
+          <button
+            className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition"
+          >
+            Confirm
+          </button>
+
+          <button
+            onClick={onClose}
+            className="bg-gray-300 text-black px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
