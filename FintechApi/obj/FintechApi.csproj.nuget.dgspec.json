@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\FintechApi.csproj": {}
+    "C:\\Users\\TRAINEE-BARORO\\Documents\\GitHub\\fintech\\FintechApi\\FintechApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\FintechApi.csproj": {
+    "C:\\Users\\TRAINEE-BARORO\\Documents\\GitHub\\fintech\\FintechApi\\FintechApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\FintechApi.csproj",
+        "projectUniqueName": "C:\\Users\\TRAINEE-BARORO\\Documents\\GitHub\\fintech\\FintechApi\\FintechApi.csproj",
         "projectName": "FintechApi",
-        "projectPath": "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\FintechApi.csproj",
-        "packagesPath": "C:\\Users\\TRAINEE-SEJISMUNDO\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\obj\\",
+        "projectPath": "C:\\Users\\TRAINEE-BARORO\\Documents\\GitHub\\fintech\\FintechApi\\FintechApi.csproj",
+        "packagesPath": "C:\\Users\\TRAINEE-BARORO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\TRAINEE-BARORO\\Documents\\GitHub\\fintech\\FintechApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\TRAINEE-SEJISMUNDO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\TRAINEE-BARORO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
