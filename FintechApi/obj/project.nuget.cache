@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RAY95MufGWo=",
+  "dgSpecHash": "DGrdEql9RhE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\codingpractice\\New folder\\FinTech\\FintechApi\\FintechApi.csproj",
+  "projectFilePath": "C:\\Users\\TRAINEE-SEJISMUNDO\\Ivanfiles\\Fintech\\fintech\\FintechApi\\FintechApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\TRAINEE-SEJISMUNDO\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\TRAINEE-SEJISMUNDO\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

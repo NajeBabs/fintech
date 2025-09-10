@@ -77,7 +77,7 @@ const Expenses = () => {
 
       <div className="flex justify-end mb-3">
         {/* Add Expense Button */}
-        <button className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-full shadow hover:bg-green-600 transition">
+        <button className="flex items-center gap-2 bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-full shadow hover:bg-[#4bb69e] transition">
           <Plus size={16} />
           Add Expense
         </button>

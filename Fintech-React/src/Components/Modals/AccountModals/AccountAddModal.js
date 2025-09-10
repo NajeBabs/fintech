@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUserAccount } from "../../services/api"; // your API helper
+import { createUserAccount } from "../../../services/api"; // your API helper
 
 export default function AddModal({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({
@@ -131,13 +131,13 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
         <div className="flex justify-center mt-4 gap-4">
           <button
             onClick={handleSave}
-            className="bg-[#9FD8CB] text-white px-4 py-2 rounded-lg"
+            className="bg-[#9FD8CB] text-black px-4 py-2 rounded-lg  shadow hover:bg-[#4bb69e] transition"
           >
             Save
           </button>
           <button
             onClick={onClose}
-            className="bg-gray-300 px-4 py-2 rounded-lg"
+            className="bg-gray-300 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition"
           >
             Cancel
           </button>

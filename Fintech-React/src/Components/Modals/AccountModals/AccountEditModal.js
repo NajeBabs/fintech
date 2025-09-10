@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateUserAccount } from "../../services/api";
+import { updateUserAccount } from "../../../services/api";
 
 export default function EditModal({ isOpen, onClose, account, onUpdate }) {
   const [formData, setFormData] = useState({
@@ -117,13 +117,13 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
         <div className="flex justify-center mt-4 gap-4">
           <button
             onClick={handleUpdate}
-            className="bg-[#9FD8CB] text-white px-4 py-2 rounded-lg"
+            className="bg-[#9FD8CB] text-black px-4 py-2 rounded-lg shadow hover:bg-[#4bb69e] transition"
           >
             Update
           </button>
           <button
             onClick={onClose}
-            className="bg-gray-300 px-4 py-2 rounded-lg"
+            className="bg-gray-300 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition"
           >
             Cancel
           </button>
