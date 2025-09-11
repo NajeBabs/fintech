@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // <-- For navigation
-import { ArrowLeft } from "lucide-react"; // Optional: nice icon library
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,15 +13,32 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registration data:", formData);
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      // Example: simulate API call
+      console.log("Registration data:", formData);
+
+      // Redirect after a short delay (simulating successful registration)
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      console.error("Registration failed:", err);
+      setError("Failed to register. Please try again.");
+    }
   };
 
   return (
@@ -29,17 +47,17 @@ const Register = () => {
       <Link
         to="/"
         className="
-    fixed z-50
-    top-4 right-4 
-    sm:top-6 sm:right-6 
-    flex items-center 
-    text-black 
-    lg:text-white 
-    hover:underline
-    p-2 sm:p-3
-    rounded-full
-    transition-colors duration-200
-  "
+          fixed z-50
+          top-4 right-4 
+          sm:top-6 sm:right-6 
+          flex items-center 
+          text-black 
+          lg:text-white 
+          hover:underline
+          p-2 sm:p-3
+          rounded-full
+          transition-colors duration-200
+        "
       >
         <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </Link>
@@ -85,6 +103,12 @@ const Register = () => {
             Confidence in Every Transaction
           </p>
         </div>
+
+        {error && (
+          <div className="text-red-500 text-center mb-4 font-semibold">
+            {error}
+          </div>
+        )}
 
         <form
           onSubmit={handleSubmit}

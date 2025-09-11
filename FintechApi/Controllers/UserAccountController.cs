@@ -1,12 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FintechApi.Data;
 using FintechApi.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace FintechApi.Controllers
 {
+    [Authorize] // 🔒 Require authentication for all endpoints
     [ApiController]
     [Route("api/[controller]")]
     public class UserAccountsController : ControllerBase
@@ -18,69 +19,89 @@ namespace FintechApi.Controllers
             _db = db;
         }
 
-        // GET: api/UserAccounts
+        // 🔹 Helper: Get logged-in user’s ID from JWT
+        private int GetUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.Parse(userIdClaim!);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserAccountModel>>> GetAll()
         {
-            var account = await _db.UserAccounts.ToListAsync();
-            return Ok(account);
+            var userId = GetUserId();
+            var accounts = await _db.UserAccounts
+                                    .Where(a => a.UserId == userId)
+                                    .ToListAsync();
+            return Ok(accounts);
         }
 
-        // GET: api/UserAccounts/{id}
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UserAccountModel>> GetById(int id)
         {
-            var account = await _db.UserAccounts.FindAsync(id);
+            var userId = GetUserId();
+            var account = await _db.UserAccounts
+                                   .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
+
             if (account == null)
                 return NotFound();
 
             return Ok(account);
         }
 
-        // POST: api/UserAccounts
         [HttpPost]
-        public async Task<ActionResult<UserAccountModel>> Create(UserAccountModel account)
+        public async Task<ActionResult<UserAccountModel>> Create([FromBody] UserAccountModel account)
         {
-            // Add the new account to the DbContext
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); // return validation errors
+
+            var userId = GetUserId();
+            account.UserId = userId;
+            account.CreatedAt = DateTime.Now;
+
             _db.UserAccounts.Add(account);
             await _db.SaveChangesAsync();
 
-            return Ok();
+            return Ok(account);
         }
 
-        // PUT: api/UserAccounts/{id}
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<IEnumerable<UserAccountModel>>> Update(int id, UserAccountModel updatedAccount)
+        public async Task<IActionResult> Update(int id, [FromBody] UserAccountModel updatedAccount)
         {
-            var existingAccount = await _db.UserAccounts.FindAsync(id);
-            if(existingAccount == null)
-            {
-                return NotFound();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            existingAccount.UserAccountType = updatedAccount.UserAccountType;
+            var userId = GetUserId();
+            var existingAccount = await _db.UserAccounts
+                                        .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
+
+            if (existingAccount == null)
+                return NotFound();
+
             existingAccount.AccountName = updatedAccount.AccountName;
+            existingAccount.AccountForm = updatedAccount.AccountForm;
+            existingAccount.UserAccountType = updatedAccount.UserAccountType;
+            existingAccount.ProviderName = updatedAccount.ProviderName;
             existingAccount.CurrentBalance = updatedAccount.CurrentBalance;
-            existingAccount.ModifiedAt = updatedAccount.ModifiedAt;
+            existingAccount.ModifiedAt = DateTime.Now;
 
             await _db.SaveChangesAsync();
-
             return NoContent();
         }
 
-        // DELETE: api/UserAccounts/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var account = await _db.UserAccounts.FindAsync(id);
-            if (account == null)
-                return NotFound(); 
+            var userId = GetUserId();
+            var account = await _db.UserAccounts
+                                   .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
 
-            // Remove the account
+            if (account == null)
+                return NotFound();
+
             _db.UserAccounts.Remove(account);
             await _db.SaveChangesAsync();
-
-            return NoContent(); 
+            return NoContent();
         }
     }
 }
