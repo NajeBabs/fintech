@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import ForgetPassword from "./Pages/ForgetPassword";
@@ -13,9 +18,11 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   console.log("API Base URL:", BASE_URL);
+
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
@@ -25,6 +32,7 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/expenses" element={<Expenses />} />
         <Route path="/goals" element={<Goals />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
