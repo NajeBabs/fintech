@@ -1,18 +1,27 @@
-import React, { use } from "react";
 import DashboardLayout from "../Components/DashboardLayout";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { getProfile } from "../services/api";
 
 const Overview = () => {
+  const [profile, setProfile] = useState(null);
+
   useEffect(() => {
     document.title = "Overview | FinTech";
+
+    // Fetch logged-in profile
+    getProfile()
+      .then((res) => setProfile(res.data))
+      .catch((err) => console.error("Failed to load profile", err));
   }, []);
 
   return (
     <DashboardLayout>
       {/* Header */}
       <div className="flex items-center mb-6">
-        <h1 className="text-2xl flex-1"><span className="text-2xl font-bold flex-1">Hello </span>Marie</h1>
-        
+        <h1 className="text-3xl font-bold flex-1">
+          Hello {profile?.firstName || "User"}
+        </h1>
+
         <h2 suppressHydrationWarning={true} className="text-2xl flex-1">
           {new Date().toLocaleDateString("en-US", {
             year: "numeric",
@@ -20,7 +29,7 @@ const Overview = () => {
             day: "numeric",
           })}
         </h2>
-        
+
         <input
           type="text"
           placeholder="Search Here"
@@ -67,7 +76,7 @@ const Overview = () => {
               </tr>
               <tr>
                 <td>Rent</td>
-                <td>$3000</td>
+                <td>$3,000</td>
               </tr>
             </tbody>
           </table>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -10,6 +10,14 @@ import {
 
 const Sidebar = () => {
   const location = useLocation();
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setProfile(JSON.parse(storedUser));
+    }
+  }, []);
 
   const menuItems = [
     { name: "Overview", path: "/overview", icon: <LayoutDashboard /> },
@@ -20,7 +28,6 @@ const Sidebar = () => {
   ];
 
   return (
-    
     <div className="w-64 bg-fintech-dark text-white flex flex-col p-4">
       <a href="/overview" className="text-xl font-bold mb-6">
         <img src="./Images/fintech logo.png" alt="FinTech Logo" />
@@ -50,7 +57,9 @@ const Sidebar = () => {
             alt="User"
             className="w-10 h-10 rounded-full"
           />
-          <span className="text-sm">Marie Sejismundo</span>
+          <span className="text-sm">
+            {profile?.firstName} {profile?.lastName || ""}
+          </span>
         </a>
       </div>
     </div>
