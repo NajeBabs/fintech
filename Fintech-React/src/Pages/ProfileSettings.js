@@ -9,6 +9,10 @@ import {
   logoutUser,
 } from "../services/api";
 
+// ✅ Import your new modal components
+import EditProfileModal from "../Components/Modals/EditProfileModal";
+import PasswordModal from "../Components/Modals/PasswordModal";
+
 const ProfileSettings = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
@@ -62,13 +66,12 @@ const ProfileSettings = () => {
   const submitProfilePicture = async () => {
     if (!picture) return;
     try {
-      const formData = new FormData();
-      formData.append("profilePicture", picture);
-      await updateProfilePicture(formData);
+      await updateProfilePicture(picture);
       setSuccess("Profile picture updated!");
       setPicture(null);
+      setError("");
     } catch (err) {
-      setError(err.response?.data || err.message || "Failed to update picture");
+      setError(err.message || "Failed to update profile");
     }
   };
 
@@ -78,8 +81,9 @@ const ProfileSettings = () => {
       setProfile(editForm);
       setShowEditModal(false);
       setSuccess("Profile updated successfully!");
+      setError("");
     } catch (err) {
-      setError(err.response?.data || err.message || "Failed to update profile");
+      setError(err.message || "Failed to update profile");
     }
   };
 
@@ -93,10 +97,9 @@ const ProfileSettings = () => {
       setPasswordForm({ currentPassword: "", newPassword: "" });
       setShowPasswordModal(false);
       setSuccess("Password changed successfully!");
+      setError("");
     } catch (err) {
-      setError(
-        err.response?.data || err.message || "Failed to change password"
-      );
+      setError(err.message || "Failed to update profile");
     }
   };
 
@@ -151,6 +154,7 @@ const ProfileSettings = () => {
           )}
         </div>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2 text-xl">
         <h1 className="text-4xl font-extrabold mb-8">Personal Information</h1>
       </div>
@@ -197,105 +201,38 @@ const ProfileSettings = () => {
         </button>
       </div>
 
-      {/* Edit Modal */}
-      {showEditModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-xl p-6 w-96 shadow-lg">
-            <h2 className="text-3xl font-bold mb-4">
-              Edit Personal Information
-            </h2>
-            <div className="space-y-3 text-lg">
-              <input
-                type="text"
-                name="firstName"
-                value={editForm.firstName}
-                onChange={handleEditChange}
-                placeholder="First Name"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-              <input
-                type="text"
-                name="lastName"
-                value={editForm.lastName}
-                onChange={handleEditChange}
-                placeholder="Last Name"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-              <input
-                type="email"
-                name="email"
-                value={editForm.email}
-                onChange={handleEditChange}
-                placeholder="Email"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-              <input
-                type="text"
-                name="address"
-                value={editForm.address}
-                onChange={handleEditChange}
-                placeholder="Address"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-            </div>
-            <div className="flex justify-end gap-3 mt-5">
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="px-4 py-2 rounded-lg bg-gray-300 font-medium text-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitEditProfile}
-                className="px-4 py-2 rounded-lg bg-primary text-white font-medium text-lg"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ✅ Externalized Modals */}
+      <EditProfileModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        editForm={editForm}
+        onChange={handleEditChange}
+        onSubmit={submitEditProfile}
+        onUpdate={async (updatedData) => {
+          try {
+            const updatedProfile = await updateProfile(updatedData);
+            setProfile(updatedProfile); // refresh state
+          } catch (err) {
+            console.error("Update profile failed:", err.message);
+          }
+        }}
+      />
 
-      {/* Password Modal */}
-      {showPasswordModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-xl p-6 w-96 shadow-lg">
-            <h2 className="text-3xl font-bold mb-4">Change Password</h2>
-            <div className="space-y-3 text-lg">
-              <input
-                type="password"
-                name="currentPassword"
-                value={passwordForm.currentPassword}
-                onChange={handlePasswordChange}
-                placeholder="Current Password"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-              <input
-                type="password"
-                name="newPassword"
-                value={passwordForm.newPassword}
-                onChange={handlePasswordChange}
-                placeholder="New Password"
-                className="w-full border rounded-lg px-3 py-2 text-lg"
-              />
-            </div>
-            <div className="flex justify-end gap-3 mt-5">
-              <button
-                onClick={() => setShowPasswordModal(false)}
-                className="px-4 py-2 rounded-lg bg-gray-300 font-medium text-lg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitPasswordChange}
-                className="px-4 py-2 rounded-lg bg-primary text-white font-medium text-lg"
-              >
-                Change
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <PasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        passwordForm={passwordForm}
+        onChange={handlePasswordChange}
+        onSubmit={submitPasswordChange}
+        onUpdate={async (newPassData) => {
+          try {
+            await changePassword(newPassData);
+            console.log("Password updated!");
+          } catch (err) {
+            console.error("Password change failed:", err.message);
+          }
+        }}
+      />
     </DashboardLayout>
   );
 };

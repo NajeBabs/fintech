@@ -21,18 +21,19 @@ const Login = () => {
     setError("");
 
     try {
+      // 🔹 FIXED: call loginUser and expect plain object
       const res = await loginUser(formData);
-      console.log("Login success:", res.data);
+      console.log("Login success:", res);
 
-      // Persist JWT token
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
+      // 🔹 FIXED: no res.data here, token is direct
+      if (res.token) {
+        localStorage.setItem("token", res.token);
       }
 
       navigate("/overview");
     } catch (err) {
-      console.error("Login failed:", err);
-      setError("Invalid username or password");
+      console.error("Login failed:", err.message);
+      setError(err.message || "Invalid username or password");
     }
   };
 
