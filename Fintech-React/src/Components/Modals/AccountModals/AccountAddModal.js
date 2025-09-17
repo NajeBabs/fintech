@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { createUserAccount } from "../../../services/api"; // our API helper
+import { createUserAccount } from "../../../services/api"; // your API helper
 
 export default function AddModal({ isOpen, onClose, onAdd }) {
-  // for error array
-  const [errors, setErrors] = useState({});
-
   const [formData, setFormData] = useState({
     accountName: "",
     accountForm: "",
@@ -12,6 +9,9 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
     providerName: "",
     currentBalance: 0,
   });
+
+  // for error array
+  const [errors, setErrors] = useState({});
 
   if (!isOpen) return null;
 
@@ -23,18 +23,18 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
   const validate = () => {
     const errors = {};
     if (!formData.accountName.trim()) {
-      errors.accountName = "Account Name is required.";
+      errors.accountName = "Account name is required.";
     }
     if (!formData.accountForm) {
-      errors.accountForm = "Account Form is required.";
+      errors.accountForm = "Account form is required.";
     }
     if (!formData.userAccountType) {
-      errors.userAccountType = "Account Type is required.";
+      errors.userAccountType = "Account type is required.";
     }
     if (!formData.providerName) {
-      errors.providerName = "Provider Name is required.";
+      errors.providerName = "Provider name is required.";
     }
-    if ((formData.currentBalance = "" || formData.currentBalance < 0)) {
+    if (formData.currentBalance < 0) {
       errors.currentBalance = "Initial amount must be 0 or more.";
     }
 
@@ -47,7 +47,6 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
       if (!validate()) {
         return;
       }
-
       await createUserAccount({
         ...formData,
         createdAt: new Date().toISOString(),
@@ -170,13 +169,13 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
         <div className="flex justify-center mt-4 gap-4">
           <button
             onClick={handleSave}
-            className="bg-[#9FD8CB] text-black px-4 py-2 rounded-lg  shadow hover:bg-[#4bb69e] transition"
+            className="bg-[#9FD8CB] text-white px-4 py-2 rounded-lg"
           >
             Save
           </button>
           <button
             onClick={onClose}
-            className="bg-gray-300 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition"
+            className="bg-gray-300 px-4 py-2 rounded-lg"
           >
             Cancel
           </button>
