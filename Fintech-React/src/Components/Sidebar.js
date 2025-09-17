@@ -15,7 +15,8 @@ const Sidebar = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setProfile(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setProfile(parsedUser);
     }
   }, []);
 
@@ -51,16 +52,27 @@ const Sidebar = () => {
       </nav>
 
       <div className="mt-auto flex items-center gap-3 p-2">
-        <a href="/profile" className="flex items-center gap-2">
+        <Link to="/profile" className="flex items-center gap-2">
           <img
-            src="https://i.pravatar.cc/40"
+            src={
+              profile?.profilePicture && profile.profilePicture.trim() !== ""
+                ? `http://localhost:5000/${profile.profilePicture}`
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
+            onError={(e) => {
+              e.currentTarget.src =
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+            }}
             alt="User"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full object-cover"
           />
+
           <span className="text-sm">
-            {profile?.firstName} {profile?.lastName || ""}
+            {profile?.firstName
+              ? `${profile.firstName} ${profile.lastName || ""}`
+              : profile?.username}
           </span>
-        </a>
+        </Link>
       </div>
     </div>
   );

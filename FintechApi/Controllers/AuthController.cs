@@ -52,7 +52,7 @@ namespace FintechApi.Controllers
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            return Ok("User registered successfully!");
+            return Ok(new { success = true, message = "User registered successfully!" });
         }
 
         [HttpPost("login")]
@@ -74,7 +74,10 @@ namespace FintechApi.Controllers
                 username = user.Username,
                 firstName = user.FirstName,
                 lastName = user.LastName,
-                email = user.Email
+                email = user.Email,
+                // profilePicture = user.ProfilePicture
+                profilePicture = string.IsNullOrEmpty(user.ProfilePicture) ? "default.png" : user.ProfilePicture
+
             });
         }
 

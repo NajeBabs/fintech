@@ -34,19 +34,23 @@ const Register = () => {
     }
 
     try {
-      // ✅ Call your API function
       const res = await registerUser(formData);
 
-      console.log("Registration successful:", res.data);
+      // If registerUser returns Axios response
+      const data = res.data || res; // safe fallback
+      console.log("Registration successful:", data);
 
-      // ✅ If backend returns a message
-      if (res.status === 200) {
+      if (data.success) {
         navigate("/login");
+      } else {
+        setError(data.message || "Registration failed. Please try again");
       }
     } catch (err) {
       console.error("Registration failed:", err);
+
       if (err.response && err.response.data) {
-        setError(err.response.data); // backend messages (e.g., "Email already in use")
+        const msg = err.response.data.message || err.response.data;
+        setError(msg);
       } else {
         setError("Failed to register. Please try again.");
       }

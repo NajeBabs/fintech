@@ -7,7 +7,7 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
     accountForm: "",
     userAccountType: "",
     providerName: "",
-    currentBalance: 0,
+    currentBalance: "",
   });
 
   // for error array
@@ -23,7 +23,7 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
         currentBalance: account.currentBalance || 0,
       });
     }
-  }, [account]);
+  }, [account, isOpen]);
 
   if (!isOpen) return null;
 
@@ -46,8 +46,9 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
     if (!formData.providerName) {
       errors.providerName = "Provider name is required.";
     }
-    if ((formData.currentBalance = "" || formData.currentBalance < 0)) {
-      errors.currentBalance = "Initial amount must be 0 or more.";
+    if (formData.currentBalance == "" || formData.currentBalance < 0) {
+      errors.currentBalance =
+        "Please enter a valid balance amount. The value must be 0 or greater.";
     }
 
     setErrors(errors);
@@ -135,7 +136,7 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
             <option>Others</option>
           </select>
 
-          <label className="block mb-2 font-semibold">Initial Balances</label>
+          <label className="block mb-2 font-semibold">Balance</label>
           <input
             name="currentBalance"
             type="number"
