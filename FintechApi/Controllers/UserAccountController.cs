@@ -44,7 +44,7 @@ namespace FintechApi.Controllers
                                    .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
 
             if (account == null)
-                return NotFound();
+                return NotFound("No user account found.");
 
             return Ok(account);
         }
@@ -85,6 +85,7 @@ namespace FintechApi.Controllers
             existingAccount.CurrentBalance = updatedAccount.CurrentBalance;
             existingAccount.ModifiedAt = DateTime.Now;
 
+            // save the updated
             await _db.SaveChangesAsync();
             return NoContent();
         }
@@ -100,6 +101,8 @@ namespace FintechApi.Controllers
                 return NotFound();
 
             _db.UserAccounts.Remove(account);
+
+            // save the changes
             await _db.SaveChangesAsync();
             return NoContent();
         }

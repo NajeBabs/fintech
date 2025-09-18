@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../Components/DashboardLayout";
-import Modal from "../Components/Modals/AccountAddModal";
-import EditModal from "../Components/Modals/AccountEditModal";
-import DeleteModal from "../Components/Modals/AccountDeleteModal";
+import Modal from "../Components/Modals/AccountModals/AccountAddModal";
+import EditModal from "../Components/Modals/AccountModals/AccountEditModal";
+import DeleteModal from "../Components/Modals/AccountModals/AccountDeleteModal";
 import { getUserAccounts } from "../services/api";
+import { Plus } from "lucide-react"
 
 const Balances = () => {
   const [ModalOpen, setModalOpen] = useState(false);
@@ -96,10 +97,11 @@ const Balances = () => {
         </h1>
 
         <button
-          className="bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-lg"
+          className="flex items-center gap-2 bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-full shadow hover:bg-[#4bb69e] transition"
           onClick={() => setModalOpen(true)}
         >
-          + Add Account
+          <Plus size={16} />
+          Add Account
         </button>
       </div>
 
@@ -122,7 +124,7 @@ const Balances = () => {
 
             <div className="flex justify-center mt-4 gap-3">
               <button
-                className="border border-red-500 text-red-500 font-bold bg-white px-4 py-2 rounded-lg"
+                className="border border-red-500 text-red-500 font-bold bg-white px-4 py-2 rounded-lg shadow hover:bg-red-500 hover:text-white transition"
                 onClick={() => {
                   setSelectedAccount(card);
                   setDeleteModalOpen(true);
@@ -131,7 +133,7 @@ const Balances = () => {
                 Delete Account
               </button>
               <button
-                className="bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-lg"
+                className="bg-[#9FD8CB] text-black font-bold px-4 py-2 rounded-lg shadow hover:bg-[#4bb69e] transition"
                 onClick={() => {
                   setSelectedAccount(card);
                   setEditModalOpen(true);

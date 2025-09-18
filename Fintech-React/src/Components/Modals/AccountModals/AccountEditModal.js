@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { updateUserAccount } from "../../services/api";
+import { updateUserAccount } from "../../../services/api";
 
 export default function EditModal({ isOpen, onClose, account, onUpdate }) {
   const [formData, setFormData] = useState({
     accountName: "",
-    accountForm: "Cash",
-    userAccountType: "Savings",
-    providerName: "BDO",
-    currentBalance: 0,
+    accountForm: "",
+    userAccountType: "",
+    providerName: "",
+    currentBalance: "",
   });
+
+  // for error array
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (account) {
       setFormData({
         accountName: account.accountName || "",
-        accountForm: account.accountForm || "Cash",
-        userAccountType: account.userAccountType || "Savings",
-        providerName: account.providerName || "BDO",
+        accountForm: account.accountForm || "",
+        userAccountType: account.userAccountType || "",
+        providerName: account.providerName || "",
         currentBalance: account.currentBalance || 0,
       });
     }
-  }, [account]);
+  }, [account, isOpen]);
 
   if (!isOpen) return null;
 
@@ -29,13 +32,39 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.accountName.trim()) {
+      errors.accountName = "Account name is required.";
+    }
+    if (!formData.accountForm) {
+      errors.accountForm = "Account form is required.";
+    }
+    if (!formData.userAccountType) {
+      errors.userAccountType = "Account type is required.";
+    }
+    if (!formData.providerName) {
+      errors.providerName = "Provider name is required.";
+    }
+    if (formData.currentBalance == "" || formData.currentBalance < 0) {
+      errors.currentBalance =
+        "Please enter a valid balance amount. The value must be 0 or greater.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleUpdate = async () => {
     try {
+      if (!validate()) {
+        return;
+      }
       await updateUserAccount(account.id, {
         ...formData,
         modifiedAt: new Date().toISOString(),
       });
-      onUpdate(); // refresh parent UI
+      onUpdate(); // refresh parent UI && refers to fetch()
       onClose();
     } catch (error) {
       console.error("Update error:", error.response || error);
@@ -46,6 +75,16 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] relative">
+        {/* Display all errors at once */}
+        {Object.keys(errors).length > 0 && (
+          <div className="mb-4 p-2 border border-red-400 bg-red-100 rounded">
+            <ul className="text-red-500 text-sm list-disc list-inside">
+              {Object.values(errors).map((error, index) => (
+                <p key={index}>{error}</p>
+              ))}
+            </ul>
+          </div>
+        )}
         <h2 className="text-xl font-bold mb-4">Edit Account</h2>
 
         <div className="text-gray-700 mb-4">
@@ -97,7 +136,7 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
             <option>Others</option>
           </select>
 
-          <label className="block mb-2 font-semibold">Initial Balances</label>
+          <label className="block mb-2 font-semibold">Balance</label>
           <input
             name="currentBalance"
             type="number"
@@ -117,13 +156,13 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
         <div className="flex justify-center mt-4 gap-4">
           <button
             onClick={handleUpdate}
-            className="bg-[#9FD8CB] text-white px-4 py-2 rounded-lg"
+            className="bg-[#9FD8CB] text-black px-4 py-2 rounded-lg shadow hover:bg-[#4bb69e] transition"
           >
             Update
           </button>
           <button
             onClick={onClose}
-            className="bg-gray-300 px-4 py-2 rounded-lg"
+            className="bg-gray-300 px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition"
           >
             Cancel
           </button>

@@ -40,6 +40,8 @@ const ProfileSettings = () => {
       .then((res) => {
         setProfile(res.data);
         setEditForm(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
+
         if (res.data.profilePicture)
           setPreview(`http://localhost:5000/${res.data.profilePicture}`);
       })
@@ -67,6 +69,11 @@ const ProfileSettings = () => {
     if (!picture) return;
     try {
       await updateProfilePicture(picture);
+
+      const res = await getProfile();
+      setProfile(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+
       setSuccess("Profile picture updated!");
       setPicture(null);
       setError("");
@@ -130,10 +137,13 @@ const ProfileSettings = () => {
             className="w-28 h-28 rounded-full border-4 border-primary object-cover"
           />
         ) : (
-          <div className="w-28 h-28 rounded-full bg-gray-200 flex items-center justify-center border-4 border-primary text-lg font-semibold">
-            No Image
-          </div>
+          <img
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            alt="Default avatar"
+            className="w-28 h-28 rounded-full border-4 border-primary object-cover"
+          />
         )}
+
         <div>
           <p className="text-gray-700 font-semibold text-xl mb-2">
             Change Profile Picture
