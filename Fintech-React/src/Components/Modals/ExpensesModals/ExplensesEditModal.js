@@ -14,21 +14,26 @@ export default function EEditModal({ isOpen, onClose }) {
 
         {/* Modal Content */}
         <div className="text-gray-700 mb-4">
-          <label className="block mb-2 font-semibold">Date</label>
-          <input
-            name="accountName"
-            type="date"
-            placeholder="Expense date"
-            className="border rounded-lg px-4 py-2 w-full mb-3"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+            <div className="flex flex-col"> 
+              <label className="block mb-2 font-semibold">Date</label>
+              <input
+                name="accountName"
+                type="date"
+                placeholder="Expense date"
+                className="border rounded-lg px-4 py-2 w-full mb-3"
+              />
+            </div>
 
-          <label className="block mb-2 font-semibold">Time</label>
-          <input 
-            aria-label="Time" 
-            type="time" 
-            className="border rounded-lg px-4 py-2 w-full mb-3"
-          />
-            
+            <div className="flex flex-col"> 
+              <label className="block mb-2 font-semibold">Time</label>
+              <input 
+                aria-label="Time" 
+                type="time" 
+                className="border rounded-lg px-4 py-2 w-full mb-3"
+              />
+            </div>
+          </div> 
 
           <label className="block mb-2 font-semibold">Description</label>
             <input

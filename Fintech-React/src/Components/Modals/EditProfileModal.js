@@ -23,7 +23,7 @@ const EditProfileModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl p-6 w-96 shadow-lg">
+      <div className="bg-white rounded-xl p-6 w-[450px]  shadow-lg">
         <h2 className="text-3xl font-bold mb-4">Edit Personal Information</h2>
         <div className="space-y-3 text-lg">
           <input
