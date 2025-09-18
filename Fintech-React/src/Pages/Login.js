@@ -23,14 +23,15 @@ const Login = () => {
     setError("");
 
     try {
+      // 🔹 FIXED: call loginUser and expect plain object
       const res = await loginUser(formData);
       console.log("Login success:", res);
 
+      // 🔹 FIXED: no res.data here, token is direct
       if (res.token) {
         localStorage.setItem("token", res.token);
       }
 
-      // ✅ Normalize profile picture path before saving
       const userInfo = {
         username: res.username,
         firstName: res.firstName,
@@ -40,7 +41,7 @@ const Login = () => {
         profilePicture: normalizePath(res.profilePicture), // 🔹 applied here
       };
 
-      localStorage.setItem("user", JSON.stringify(userInfo));
+      localStorage.setItem("user", JSON.stringify(userInfo)); 
 
       navigate("/overview");
     } catch (err) {

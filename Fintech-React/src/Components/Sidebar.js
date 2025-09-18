@@ -12,7 +12,7 @@ const Sidebar = () => {
   const location = useLocation();
   const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
+   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -29,6 +29,7 @@ const Sidebar = () => {
   ];
 
   return (
+    
     <div className="w-64 bg-fintech-dark text-white flex flex-col p-4">
       <a href="/overview" className="text-xl font-bold mb-6">
         <img src="./Images/fintech logo.png" alt="FinTech Logo" />
@@ -41,7 +42,7 @@ const Sidebar = () => {
             to={item.path}
             className={`flex items-center gap-3 p-2 rounded-lg transition ${
               location.pathname === item.path
-                ? "bg-fintech-mint text-black font-semibold"
+                ? "bg-[#9FD8CB] text-black font-semibold"
                 : "hover:bg-gray-700"
             }`}
           >

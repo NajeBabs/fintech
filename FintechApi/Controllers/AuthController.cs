@@ -74,10 +74,7 @@ namespace FintechApi.Controllers
                 username = user.Username,
                 firstName = user.FirstName,
                 lastName = user.LastName,
-                email = user.Email,
-                // profilePicture = user.ProfilePicture
-                profilePicture = string.IsNullOrEmpty(user.ProfilePicture) ? "default.png" : user.ProfilePicture
-
+                email = user.Email
             });
         }
 
