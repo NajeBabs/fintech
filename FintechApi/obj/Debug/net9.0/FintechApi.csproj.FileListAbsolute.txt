@@ -502,3 +502,5 @@ C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\obj\Debug\net9.
 C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\obj\Debug\net9.0\FintechApi.pdb
 C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\obj\Debug\net9.0\FintechApi.genruntimeconfig.cache
 C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\obj\Debug\net9.0\ref\FintechApi.dll
+C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\TRAINEE-SEJISMUNDO\Ivanfiles\Fintech\fintech\FintechApi\bin\Debug\net9.0\Swashbuckle.AspNetCore.Annotations.dll

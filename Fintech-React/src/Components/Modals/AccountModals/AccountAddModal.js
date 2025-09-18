@@ -15,6 +15,19 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+   if (name === "accountForm") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        providerName: "", // Reset provider when changing account form
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSave = async () => {
@@ -40,6 +53,12 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
       console.error("Failed to add account:", error);
       alert("Failed to add account. Check console.");
     }
+  };
+
+  const providerOptions = {
+    Cash: ["Cash"],
+    "E-Wallet": ["G-Cash", "Maya", "Paypal", "Other E-Wallets"],
+    "Bank deposit": ["BDO", "BPI", "MetroBank", "Other Banks"],
   };
 
   return (
@@ -72,8 +91,24 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
             </option>
             <option>Cash</option>
             <option>E-Wallet</option>
-            <option>Digital Currency</option>
             <option>Bank deposit</option>
+          </select>
+
+          <label className="block mb-2 font-semibold">Provider Name</label>
+          <select
+            name="providerName"
+            value={formData.providerName}
+            onChange={handleChange}
+            className="border rounded-lg px-4 py-2 w-full mb-3"
+          >
+            <option value="" disabled>
+              Select provider name
+            </option>
+            {providerOptions[formData.accountForm]?.map((provider, index) => (
+              <option key={index} value={provider}>
+                {provider}
+              </option>
+            ))}
           </select>
 
           <label className="block mb-2 font-semibold">Account Type</label>
@@ -88,24 +123,6 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
             </option>
             <option>Savings</option>
             <option>Expenses</option>
-          </select>
-
-          <label className="block mb-2 font-semibold">Provider Name</label>
-          <select
-            name="providerName"
-            value={formData.providerName}
-            onChange={handleChange}
-            className="border rounded-lg px-4 py-2 w-full mb-3"
-          >
-            <option value="" disabled>
-              Select provider name
-            </option>
-            <option>BDO</option>
-            <option>BPI</option>
-            <option>MetroBank</option>
-            <option>G-Cash</option>
-            <option>Maya</option>
-            <option>Others</option>
           </select>
 
           <label className="block mb-2 font-semibold">Initial Balance</label>
