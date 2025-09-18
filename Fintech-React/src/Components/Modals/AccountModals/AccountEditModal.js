@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { updateUserAccount } from "../../../services/api";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function EditModal({ isOpen, onClose, account, onUpdate }) {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
     providerName: "",
     currentBalance: 0,
   });
+
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (account) {
@@ -42,13 +45,38 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
     }
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.accountName.trim()) {
+      errors.accountName = "Account name is required.";
+    }
+    if (!formData.accountForm) {
+      errors.accountForm = "Account form is required.";
+    }
+    if (!formData.userAccountType) {
+      errors.userAccountType = "Account type is required.";
+    }
+    if (!formData.providerName) {
+      errors.providerName = "Provider name is required.";
+    }
+    if ((formData.currentBalance < 0)) {
+      errors.currentBalance = "Initial amount must be 0 or more.";
+    }
+
+    Object.values(errors).forEach(msg => toast.error(msg));
+    return Object.keys(errors).length === 0;
+  };
+
   const handleUpdate = async () => {
     try {
+      if (!validate()) {
+        return;
+      }
       await updateUserAccount(account.id, {
         ...formData,
         modifiedAt: new Date().toISOString(),
       });
-      onUpdate(); // refresh parent UI
+      onUpdate(); // refresh parent UI && refers to fetch()
       onClose();
     } catch (error) {
       console.error("Update error:", error.response || error);
@@ -65,8 +93,8 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] relative">
+        <Toaster position="top-right" reverseOrder={false} />
         <h2 className="text-xl font-bold mb-4">Edit Account</h2>
-
         <div className="text-gray-700 mb-4">
           <label className="block mb-2 font-semibold">Account Name</label>
           <input
@@ -117,7 +145,7 @@ export default function EditModal({ isOpen, onClose, account, onUpdate }) {
             <option>Expenses</option>
           </select>
 
-          <label className="block mb-2 font-semibold">Initial Balances</label>
+          <label className="block mb-2 font-semibold">Balances</label>
           <input
             name="currentBalance"
             type="number"

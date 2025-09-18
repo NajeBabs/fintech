@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createUserAccount } from "../../../services/api"; // your API helper
+import { Toaster, toast } from "react-hot-toast"; 
 
 export default function AddModal({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
     providerName: "",
     currentBalance: 0,
   });
+
+  const [errors, setErrors] = useState({});
 
   if (!isOpen) return null;
 
@@ -30,8 +33,34 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
     }
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.accountName.trim()) {
+      errors.accountName = "Account Name is required.";
+    }
+    if (!formData.accountForm) {
+      errors.accountForm = "Account Form is required.";
+    }
+    if (!formData.userAccountType) {
+      errors.userAccountType = "Account Type is required.";
+    }
+    if (!formData.providerName) {
+      errors.providerName = "Provider Name is required.";
+    }
+    if ((formData.currentBalance < 0)) {
+      errors.currentBalance = "Initial amount must be 0 or more.";
+    }
+
+    Object.values(errors).forEach(msg => toast.error(msg));
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSave = async () => {
     try {
+      if (!validate()) {
+        return;
+      }
+
       await createUserAccount({
         ...formData,
         createdAt: new Date().toISOString(),
@@ -64,6 +93,7 @@ export default function AddModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[600px] relative">
+        <Toaster position="top-right" reverseOrder={false} />
         {/* Modal Title */}
         <h2 className="text-xl font-bold mb-4">Add Account</h2>
 

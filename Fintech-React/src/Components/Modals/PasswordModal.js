@@ -23,23 +23,23 @@ const PasswordModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl p-6 w-96 shadow-lg">
+      <div className="bg-white rounded-xl p-6 w-[600px] shadow-lg">
         <h2 className="text-3xl font-bold mb-4">Change Password</h2>
         <div className="space-y-3 text-lg">
+          <label className="block font-semibold">Current Password</label>
           <input
             type="password"
             name="currentPassword"
             value={passwordForm.currentPassword}
             onChange={onChange}
-            placeholder="Current Password"
             className="w-full border rounded-lg px-3 py-2 text-lg"
           />
+          <label className="block font-semibold">New Password</label>
           <input
             type="password"
             name="newPassword"
             value={passwordForm.newPassword}
             onChange={onChange}
-            placeholder="New Password"
             className="w-full border rounded-lg px-3 py-2 text-lg"
           />
         </div>
@@ -52,7 +52,7 @@ const PasswordModal = ({
           </button>
           <button
             onClick={handleChangePassword}
-            className="px-4 py-2 rounded-lg bg-primary text-white font-medium text-lg"
+            className="px-4 py-2 rounded-lg bg-[#9FD8CB] text-black font-medium text-lg"
           >
             Change
           </button>
