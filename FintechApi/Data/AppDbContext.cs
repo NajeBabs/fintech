@@ -9,8 +9,8 @@ namespace FintechApi.Data
         // This constructor lets ASP.NET inject options (like the connection string)
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // DbSet<T> maps your model to a table (TaskItem -> Tasks)
+        // 🔹 Your tables
         public DbSet<UserAccountModel> UserAccounts => Set<UserAccountModel>();
+        public DbSet<UserModel> Users => Set<UserModel>();   // 👈 Add this
     }
 }
-

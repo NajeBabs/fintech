@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // <-- For navigation
-import { ArrowLeft } from "lucide-react"; // Optional: nice icon library
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { registerUser } from "../services/api"; // ✅ import your API helper
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,49 +14,65 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registration data:", formData);
+    setError("");
+    setLoading(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // ✅ Call your API function
+      const res = await registerUser(formData);
+
+      console.log("Registration successful:", res.data);
+
+      // ✅ If backend returns a message
+      if (res.status === 200) {
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("Registration failed:", err);
+      if (err.response && err.response.data) {
+        setError(err.response.data); // backend messages (e.g., "Email already in use")
+      } else {
+        setError("Failed to register. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row relative">
-      {/* Back Arrow at Top Right */}
+      {/* Back Arrow */}
       <Link
         to="/"
-        className="
-    fixed z-50
-    top-4 right-4 
-    sm:top-6 sm:right-6 
-    flex items-center 
-    text-black 
-    lg:text-white 
-    hover:underline
-    p-2 sm:p-3
-    rounded-full
-    transition-colors duration-200
-  "
+        className="fixed z-50 top-4 right-4 sm:top-6 sm:right-6 flex items-center text-black lg:text-white hover:underline p-2 sm:p-3 rounded-full transition-colors duration-200"
       >
         <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </Link>
 
       {/* Left Section */}
       <div className="lg:flex-1 bg-fintech-mint relative flex flex-col justify-between overflow-hidden p-6 sm:p-10 lg:p-16">
-        {/* Branding */}
         <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-6 lg:left-14 z-10">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl text-black">
             <span className="font-bold">Fin</span>
             <span className="font-normal">Tech</span>
           </h1>
         </div>
-
-        {/* Content */}
         <div className="flex flex-col justify-center flex-1 pt-16 sm:pt-20 lg:pt-0">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-6xl font-bold text-black leading-snug max-w-full sm:max-w-sm md:max-w-md lg:max-w-2xl">
             Your wallet's best
@@ -64,8 +82,6 @@ const Register = () => {
             one sign-up away
           </h2>
         </div>
-
-        {/* Illustration */}
         <div className="flex justify-center lg:justify-center mt-8 lg:mt-0">
           <img
             src="./Images/register.png"
@@ -85,6 +101,12 @@ const Register = () => {
             Confidence in Every Transaction
           </p>
         </div>
+
+        {error && (
+          <div className="text-red-500 text-center mb-4 font-semibold">
+            {error}
+          </div>
+        )}
 
         <form
           onSubmit={handleSubmit}
@@ -199,8 +221,9 @@ const Register = () => {
           <button
             type="submit"
             className="w-full h-12 sm:h-14 bg-primary text-black font-bold rounded-lg hover:bg-opacity-90 transition duration-200"
+            disabled={loading}
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
       </div>

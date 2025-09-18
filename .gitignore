@@ -1,0 +1,12 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore Visual Studio/VSCode files
+.vscode/
+*.user
+*.suo
+
+# Ignore other temporary files
+*.log
+*.cache
