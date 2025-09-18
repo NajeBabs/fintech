@@ -41,18 +41,6 @@ const Balances = () => {
     fetchAccounts();
   }, []);
 
-  // Optional: Optimistic UI update for edit
-  const handleUpdateInUI = (updatedAccount) => {
-    setCards((prev) =>
-      prev.map((acc) => (acc.id === updatedAccount.id ? updatedAccount : acc))
-    );
-  };
-
-  // Optional: Optimistic UI update for delete
-  const handleDeleteFromUI = (id) => {
-    setCards((prev) => prev.filter((acc) => acc.id !== id));
-  };
-
   // Provider logos
   const getProviderImage = (provider) => {
     switch (provider.toLowerCase()) {
