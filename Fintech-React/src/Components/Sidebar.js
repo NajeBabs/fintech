@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -10,15 +10,6 @@ import {
 
 const Sidebar = () => {
   const location = useLocation();
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setProfile(parsedUser);
-    }
-  }, []);
 
   const menuItems = [
     { name: "Overview", path: "/overview", icon: <LayoutDashboard /> },
@@ -29,6 +20,7 @@ const Sidebar = () => {
   ];
 
   return (
+    
     <div className="w-64 bg-fintech-dark text-white flex flex-col p-4">
       <a href="/overview" className="text-xl font-bold mb-6">
         <img src="./Images/fintech logo.png" alt="FinTech Logo" />
@@ -52,27 +44,14 @@ const Sidebar = () => {
       </nav>
 
       <div className="mt-auto flex items-center gap-3 p-2">
-        <Link to="/profile" className="flex items-center gap-2">
+        <a href="/profile" className="flex items-center gap-2">
           <img
-            src={
-              profile?.profilePicture && profile.profilePicture.trim() !== ""
-                ? `http://localhost:5000/${profile.profilePicture}`
-                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            }
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-            }}
+            src="https://i.pravatar.cc/40"
             alt="User"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full"
           />
-
-          <span className="text-sm">
-            {profile?.firstName
-              ? `${profile.firstName} ${profile.lastName || ""}`
-              : profile?.username}
-          </span>
-        </Link>
+          <span className="text-sm">Marie Sejismundo</span>
+        </a>
       </div>
     </div>
   );
