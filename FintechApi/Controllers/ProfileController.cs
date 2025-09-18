@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FintechApi.Data;
-using FintechApi.Models;
 using FintechApi.Dtos;
 using System.Security.Claims;
 using System.Security.Cryptography;
