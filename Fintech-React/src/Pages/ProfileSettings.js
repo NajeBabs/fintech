@@ -41,6 +41,8 @@ const ProfileSettings = () => {
       .then((res) => {
         setProfile(res.data);
         setEditForm(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
+
         if (res.data.profilePicture)
           setPreview(`http://localhost:5000/${res.data.profilePicture}`);
       })
@@ -64,10 +66,15 @@ const ProfileSettings = () => {
     setPasswordForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submitProfilePicture = async () => {
+   const submitProfilePicture = async () => {
     if (!picture) return;
     try {
       await updateProfilePicture(picture);
+
+      const res = await getProfile();
+      setProfile(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+
       toast.success("Profile picture updated!");
       setPicture(null);
       setError("");
@@ -91,7 +98,7 @@ const ProfileSettings = () => {
   const submitPasswordChange = async () => {
     try {
       if (!passwordForm.currentPassword || !passwordForm.newPassword) {
-        setError("Both current and new password are required");
+        toast.error("Both current and new password are required");
         return;
       }
       await changePassword(passwordForm);
@@ -100,13 +107,14 @@ const ProfileSettings = () => {
       toast.success("Password changed successfully!");
       setError("");
     } catch (err) {
-      setError(err.message || "Failed to update profile");
+      toast.error(err.message || "Failed to update profile");
     }
   };
 
   const handleLogout = () => {
     logoutUser();
     navigate("/login");
+    toast.success("Logged out successfully!");
   };
 
   return (
@@ -131,12 +139,7 @@ const ProfileSettings = () => {
       {error && (
         <div className="text-red-600 font-semibold mb-4 text-lg">{error}</div>
       )}
-      {success && (
-        <div className="text-green-600 font-semibold mb-4 text-lg">
-          {success}
-        </div>
-      )}
-
+  
       {/* Profile Picture */}
       <div className="relative items-center gap-6 mb-8">
         <div className="flex items-center gap-6 mb-8">

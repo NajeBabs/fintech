@@ -16,6 +16,8 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const normalizePath = (path) => path?.replace(/\\/g, "/");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -29,6 +31,17 @@ const Login = () => {
       if (res.token) {
         localStorage.setItem("token", res.token);
       }
+
+      const userInfo = {
+        username: res.username,
+        firstName: res.firstName,
+        lastName: res.lastName,
+        email: res.email,
+        userId: res.userId,
+        profilePicture: normalizePath(res.profilePicture), // 🔹 applied here
+      };
+
+      localStorage.setItem("user", JSON.stringify(userInfo)); 
 
       navigate("/overview");
     } catch (err) {
