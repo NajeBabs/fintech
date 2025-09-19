@@ -1,9 +1,0 @@
-# Build output
-/bin/
-/obj/
-
-# VS temporary files
-*.user
-*.suo
-*.cache
-*.log
