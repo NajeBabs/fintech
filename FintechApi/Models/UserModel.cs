@@ -2,7 +2,7 @@ namespace FintechApi.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }  
+        public int Id { get; set; }
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
         public string Address { get; set; } = "";
@@ -13,5 +13,8 @@ namespace FintechApi.Models
         // For password storage
         public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
         public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
+
+        // ✅ Navigation property
+        public ICollection<GoalModel> Goals { get; set; } = null!;
     }
 }

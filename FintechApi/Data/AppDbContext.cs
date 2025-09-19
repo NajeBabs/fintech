@@ -11,6 +11,26 @@ namespace FintechApi.Data
 
         // 🔹 Your tables
         public DbSet<UserAccountModel> UserAccounts => Set<UserAccountModel>();
-        public DbSet<UserModel> Users => Set<UserModel>();   // 👈 Add this
+        public DbSet<UserModel> Users => Set<UserModel>();
+        public DbSet<GoalModel> Goals => Set<GoalModel>();
+
+         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure relationship for Goals → Users
+            modelBuilder.Entity<GoalModel>()
+                .HasOne(g => g.User)
+                .WithMany(u => u.Goals)
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // <— Add this
+
+            // Configure relationship for Goals → UserAccounts
+            modelBuilder.Entity<GoalModel>()
+                .HasOne(g => g.UserAccount)
+                .WithMany(ua => ua.Goals)
+                .HasForeignKey(g => g.UserAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

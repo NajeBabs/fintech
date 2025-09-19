@@ -6,6 +6,7 @@ using System.Text;
 using FintechApi.Data;
 using FintechApi.Swagger;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +59,7 @@ builder.Services.Configure<FormOptions>(options =>
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("DevCors", p =>
-        p.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        p.WithOrigins("http://localhost:3000", "http://localhost:5000")
          .AllowAnyHeader()
          .AllowAnyMethod());
 });
@@ -80,6 +81,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+var options = new RewriteOptions()
+    .AddRedirect("^$", "/swagger");
 
 // Ensure upload folder exists
 var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "ProfilePictures");

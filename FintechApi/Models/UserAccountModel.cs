@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
 namespace FintechApi.Models
 {
     public class UserAccountModel
@@ -31,5 +29,8 @@ namespace FintechApi.Models
         [Required]
         public int UserId { get; set; }
         public UserModel? User { get; set; }
+
+        // ✅ Navigation property
+        public ICollection<GoalModel> Goals { get; set; } = null!;
     }
 }
