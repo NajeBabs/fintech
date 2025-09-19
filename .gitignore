@@ -10,3 +10,5 @@ obj/
 # Ignore other temporary files
 *.log
 *.cache
+node_modules/.package-lock.json
+/node_modules
