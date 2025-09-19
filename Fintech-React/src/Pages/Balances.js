@@ -101,7 +101,14 @@ const Balances = () => {
         </button>
       </div>
 
+      
+
       {/* Account Cards */}
+      {cards.length === 0 ? (
+  <p className="text-center text-gray-500 text-lg mt-10">
+    No accounts found. Click <span className="font-semibold">Add Account</span> to get started.
+  </p>
+) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card) => (
           <div
@@ -141,7 +148,7 @@ const Balances = () => {
           </div>
         ))}
       </div>
-
+    )}
       {/* Modals */}
       {/* <Modal isOpen={ModalOpen} onClose={() => setModalOpen(false)} /> */}
       <Modal
