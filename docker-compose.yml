@@ -1,0 +1,44 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - appnet
+
+  backend:
+    build:
+      context: ./FintechApi
+      dockerfile: Dockerfile
+    container_name: fintech-api
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=FintechDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+    ports:
+      - "5000:5000"
+    networks:
+      - appnet
+
+  frontend:
+    build:
+      context: ./Fintech-React
+      dockerfile: Dockerfile
+    container_name: fintech-react
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    environment:
+      # Example API URL passed at build time or runtime
+      - REACT_APP_API_URL=http://localhost:5000
+      
+networks:
+  appnet:
+    driver: bridge

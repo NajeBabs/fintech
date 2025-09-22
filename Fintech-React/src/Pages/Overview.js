@@ -1,6 +1,7 @@
 import DashboardLayout from "../Components/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { getProfile } from "../services/api";
+import { Toaster } from "react-hot-toast";
 
 const Overview = () => {
   const [profile, setProfile] = useState(null);
@@ -17,6 +18,7 @@ const Overview = () => {
   return (
     <DashboardLayout>
       {/* Header */}
+      <Toaster />
       <div className="flex items-center mb-6">
         <h1 className="text-3xl font-bold flex-1">
           Hello {profile?.firstName || "User"}

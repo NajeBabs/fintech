@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/api";
+import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Login = () => {
       // 🔹 FIXED: call loginUser and expect plain object
       const res = await loginUser(formData);
       console.log("Login success:", res);
+      toast.success("Login successful!");
 
       // 🔹 FIXED: no res.data here, token is direct
       if (res.token) {
